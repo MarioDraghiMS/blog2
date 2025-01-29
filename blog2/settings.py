@@ -60,7 +60,7 @@ ROOT_URLCONF = 'blog2.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -75,6 +75,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'blog2.wsgi.application'
 
+LOGIN_REDIRECT_URL = '/'
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases

@@ -4,7 +4,7 @@ from django.core.paginator import Paginator
 from .models import Post
 from .forms import PostForm
 
-@login_required
+# @login_required
 def posts_list(request):
     posts = Post.objects.filter(status='published')
     paginator = Paginator(posts, 10)

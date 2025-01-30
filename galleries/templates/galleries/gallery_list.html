@@ -1,0 +1,11 @@
+{% extends "posts\base.html" %}
+
+{% block content %}
+<h2>Galleries</h2>
+<ul>
+    {% for gallery in galleries %}
+    <li><a href="{% url 'gallery_detail' gallery.id %}">{{ gallery.name }}</a></li>
+    {% endfor %}
+</ul>
+<a href="{% url 'gallery_create' %}" class="btn btn-primary">Create New Gallery</a>
+{% endblock %}

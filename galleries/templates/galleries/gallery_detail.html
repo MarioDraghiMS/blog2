@@ -1,0 +1,21 @@
+{% extends "posts/base.html" %}
+
+{% block content %}
+<h2>{{ gallery.name }}</h2>
+<p>{{ gallery.description }}</p>
+
+<div class="row">
+    {% for photo in gallery.photos.all %}
+    <div class="col-md-4 mb-4">
+        <div class="card">
+            <img src="{{ photo.image.url }}" class="card-img-top img-fluid" alt="{{ photo.description }}">
+            <div class="card-body">
+                <p class="card-text">{{ photo.description }}</p>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<a href="{% url 'photo_add' gallery.id %}" class="btn btn-primary">Add Photo</a>
+{% endblock %}

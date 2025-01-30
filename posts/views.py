@@ -16,12 +16,15 @@ def posts_list(request):
 def post_details(request, post_id):
     post = get_object_or_404(Post, id=post_id, status='published')
     if request.method == 'POST':
-        form = PostForm(request.POST, request.FILES, instance=post)
-        if form.is_valid():
-            form.save()
+        if request.user == post.author:
+            form = PostForm(request.POST, request.FILES, instance=post)
+            if form.is_valid():
+                form.save()
+                return redirect('post_details', post_id=post.id)
+        else:
             return redirect('post_details', post_id=post.id)
     else:
-        form = PostForm(instance=post)
+        form = PostForm(instance=post) if request.user == post.author else None
     return render(request, 'posts/details.html', {'form': form, 'post': post})
 
 @login_required
@@ -36,3 +39,24 @@ def post_create(request):
     else:
         form = PostForm()
     return render(request, 'posts/form_details.html', {'form': form})
+
+@login_required
+def post_edit(request, post_id):
+    post = get_object_or_404(Post, id=post_id, status='published')
+    if request.user != post.author:
+        return redirect('post_details', post_id=post.id)
+    if request.method == 'POST':
+        form = PostForm(request.POST, request.FILES, instance=post)
+        if form.is_valid():
+            form.save()
+            return redirect('post_details', post_id=post.id)
+    else:
+        form = PostForm(instance=post)
+    return render(request, 'posts/form_details.html', {'form': form})
+
+@login_required
+def post_delete(request, post_id):
+    post = get_object_or_404(Post, id=post_id, status='published')
+    if request.user == post.author:
+        post.delete()
+    return redirect('posts_list')
